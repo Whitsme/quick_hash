@@ -1,0 +1,5 @@
+.venv
+api.py
+.vscode
+scan_results.db
+__pycache__
