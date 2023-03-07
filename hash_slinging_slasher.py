@@ -16,6 +16,10 @@ def hash_it(hash_this, check_sum) -> str:
         for chunk in iter(lambda: f.read(4096), b""):
             digest.update(chunk)
     hash_sum = str(digest.hexdigest()).upper()
-    print("{} Checksum: {}".format(algorithm, check_sum))
-    print("{} Hashsum:     {}".format(algorithm.upper(), hash_sum))
+    print("{} Checksum: {}".format(algorithm, check_sum.upper()))
+    print("{} Hash Sum:     {}".format(algorithm.upper(), hash_sum))
+    if hash_sum.upper() == check_sum.upper():
+        print("File hash sum and provided check sum match!")
+    elif check_sum != '' or check_sum != None:
+        print("----> WARNING! <----\nHash sum and Check sum DO NOT MATCH!")
     return hash_sum

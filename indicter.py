@@ -12,15 +12,24 @@ def sandbox(resource, resource_sum, results):
             if vv is not str:
                 vv == ''
             box.append(vv)
-        writer(box, "sandbox")
+        writer(box, "file_sandbox")
 
 def analysis(resource, resource_sum, results):
-    for k,v in results.items():
+    try:
+        results = results.items()
+    except:
+        results = results[0].items()
+    for k,v in results:
         box.clear()
         box.append(resource)
         box.append(resource_sum)
         for kk, vv in v.items():
-            if vv is not str:
+            try:
+                vv = str(vv)
+            except:
                 vv == ''
             box.append(vv)
-        writer(box, "sandbox")
+        if len(box) > 7:
+            writer(box, "file_analysis")
+        else:
+            writer(box, "url_analysis")

@@ -1,5 +1,6 @@
 import vt
 from api import api_key
+import time
 
 key = api_key()
 client = vt.Client(key)
@@ -8,24 +9,40 @@ client = vt.Client(key)
 hist_dict = []
 """creates empty list for storing VirusTotal API results"""
 
-def file_history(resource_sum):
+def file_scan(resource_sum, resource):
+    with open(resource, "rb") as f:
+        analysis = client.scan_file(f)
+        while True:
+            analysis = client.get_object("/analyses/{}".format(analysis.id))
+            print(analysis.status)
+            if analysis.status == "completed":
+                break
+            time.sleep(30)
+    file_history(resource_sum, resource)
+
+def file_history(resource_sum, resource):
     try:
-        hist_dict.clear()
-        """clears list for storing VirusTotal API results"""
         check_history = client.get_object("/files/{}".format(resource_sum))
         """sends file hash sum to VirusTotal API to check for existing scans"""
         hist = check_history
         """stores VirusTotal API results in variable"""
         if hist != '' or hist != None:
             """checks to see if VirusTotal API returned results"""
-            hist_dict.append(hist.sandbox_verdicts)
+            hist_dict.clear()
+            """clears list for storing VirusTotal API results"""
+            try:
+                hist_dict.append(hist.sandbox_verdicts)
+            except:
+                print("Sandbox Results Unavailable...")
             hist_dict.append(hist.last_analysis_results)
             return hist_dict
             """appends VirusTotal API results to list and returns list"""
-        # file_scan(resource)
-        return False
     except:
-        return False
+        if len(hist_dict) == 0:
+            hist_dict.append('0')
+            file_scan(resource_sum, resource)
+        else:
+            print("error!")
 
 def url_history(resource):
     hist_dict.clear()
@@ -41,20 +58,11 @@ def url_history(resource):
     except:
         # url_scan(resource)
         return False
-    
-"""
+        
+""" 
 def url_scan(resource):
     requested_scan = client.scan_url(resource)
     url_history(requested_scan)
-
-def file_scan(resource):
-    with open(resource, "rb") as f:
-        analysis = client.scan_file(f)
-        while True:
-            analysis = client.get_object("/analyses/{}".format(analysis.id))
-            print(analysis.status)
-            if analysis.status == "completed":
-                break
-            time.sleep(30)
-    file_history(resource_sum)
 """
+
+
