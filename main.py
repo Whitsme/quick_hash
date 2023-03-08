@@ -1,7 +1,7 @@
 import os
 import subprocess
 import sqlite3
-from inputs import resource_request, request_check_sum
+from inputs import resource_request, request_check_sum, final_results
 from hash_slinging_slasher import hash_check, hash_it
 from file_check import verify_file
 from url_check import verify_url
@@ -23,7 +23,7 @@ def main():
     resource = resource_request()
     """requests file path or url from user"""
     if resource == '':
-        subprocess.Popen('explorer /select, {}'.format(os.path))
+        subprocess.Popen('explorer /select, {}'.format(os.path)) #currently not working as intended 
         """if user input is empty, opens file explorer to select file"""
         
     elif verify_file(resource) == True:
@@ -76,17 +76,11 @@ def main():
                             not_found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
                         else:
                             found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
-                        """prints results to the console"""
-    if len(not_found) > 0:
-        see_raw = input("No threats detected!\n Press any key to exit or enter 'raw' to see raw results.\n  ")
-        if see_raw.lower() == "raw":
-            for i in not_found:
-                print(i)
-        quit()
-    elif len(found) > 0:
-        print("--------> WARNING! <--------\n !!!!!THREAT DETECTED!!!!!\n\nPlease submit a ticket for review with the below included.\n")
-        for i in found:
-            print(i)
+                            """prints results to the console"""
+    
+    fnf_list = final_results(found, not_found) 
+    for i in fnf_list:
+        print(i)
     
 if __name__ == "__main__":
     main()
