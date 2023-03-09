@@ -1,23 +1,33 @@
 import requests
-from api import crx_key
+import json
+from indicter import crx_returned
 
-key = crx_key()
+# extension = "ajanlknhcmbhbdafadmkobjnfkhdiegm"
 
-api_url = 'https://api.crxcavator.io/v1/submit'
+def crx_report(extension):
+    url = "https://api.crxcavator.io/v1/report/{}?platform=Chrome&new_scan=true".format(extension)
 
-headers = {
-    'APIKey': key,
-    'accept': 'application/json',
-    'Content-Type': 'application/json',
-}
+    payload = ""
+    headers = {
+    'Accept': 'application/json'
+    }
 
-params = {
-    "extension_id": "ajanlknhcmbhbdafadmkobjnfkhdiegm"
-}
+    response = requests.request("GET", url, headers=headers, data=payload)
 
-response_info = requests.post(url = api_url, headers = headers, data = params)
+    crx_returned(extension, response.json())
 
-# with open ('crxcavator_api.json', 'r') as file:
-#     response_info = json.load(file)
+def crx_meta(extension):
+    url = "https://api.crxcavator.io/v1/metadata/{}".format(extension)
 
-print(response_info.text)
+    payload={}
+    headers = {
+    'Accept': 'application/json'
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    if response.status_code == 200:
+        return True
+    return False
+
+
