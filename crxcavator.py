@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import requests
 import json
 from indicter import crx_returned

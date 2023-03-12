@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import urllib.request
 
 def verify_url(resource):

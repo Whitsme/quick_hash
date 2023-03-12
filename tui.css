@@ -1,0 +1,102 @@
+/* supersedes all styles below */
+Screen {
+    align: center middle;
+    layers: below middle above;
+}
+
+/* header */
+#header {
+    dock: top;
+    height: 3%;
+    background: darkgoldenrod;
+    align: center top;
+}
+
+/* return_grid */
+#return_grid {
+    layout: grid;
+    grid-size: 4;  /* four columns */
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+    border: vkey darkgoldenrod;
+}
+
+/* return_grid -> left */
+#left_pane > Static {    
+    background: $boost;
+    color: auto;
+    margin-bottom: 1;
+    padding: 1;
+    border: whitesmoke round;
+}
+
+/* return_grid -> left */
+#left_pane {
+    height: 100%;
+    row-span: 2;
+    background: $panel;
+    border: seagreen round;
+    scrollbar-color: goldenrod 60%;
+    scrollbar-background: $panel;
+}
+
+/* return_grid -> right */
+#top_right {
+    column-span: 3;
+    height: 100%;
+    background: $panel;
+    border: seagreen round;
+}
+
+/* return_grid -> right*/
+#top_right > Static {
+    width: auto;
+    height: 100%;
+    margin-right: 1;
+    background: $boost;
+}
+
+/* input grid */
+#input_grid {
+    height: 10%;
+    width: 75%;
+    layout: grid;
+    grid-size: 6;
+    grid-columns: 1fr;
+    grid-rows: 1fr;
+    background: $panel;
+    border: seagreen round;
+    layer: above;
+    offset: 5% 5%;
+}
+
+/* input grid */
+#input_grid > Static {
+    height: 100%;
+}
+
+/* input grid -> input */
+#input {
+    margin: 1;
+    column-span: 5;
+    height: 100%;
+    border: whitesmoke round;
+    background: $panel;
+    content-align: center middle;
+}
+
+/* input grid -> button */
+#button {
+    width: 100%;
+    margin: 1;
+    color: seagreen 80%;
+    border:  seagreen round;
+}
+
+/* footer */
+#footer {
+    dock: bottom;
+    height: 2%;
+    background: darkgoldenrod;
+    align: center top;
+}

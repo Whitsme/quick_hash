@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 
 def request_check_sum() -> str:
     check_sum = input("Enter the sha256 check sum, or press enter to skip:\n")

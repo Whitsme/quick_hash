@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import vt
 from api import api_key
 import time

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from db import writer
 
 crx_filter = ["last_updated", "name", "permission_warnings", "size", "users"]

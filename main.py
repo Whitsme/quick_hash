@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import subprocess
 import sqlite3
@@ -77,8 +79,7 @@ def main():
             elif table == "crx_report":
                 box = db_info.fetchall()
                 if len(box) > 0:
-                    print("CRXxavator Results:\n\nCSP Score: {} + Permission Score: {} = Total Score: {}\nName: {} | Version: {} | Last Update: {} | Users: {} | Size: {}\nPermission Warnings: {}\n".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
-                        
+                    print("CRXxavator Results:\n\n[CSP Score: {}] + [Permission Score: {}] = Total Score: {}\nName: {} | Version: {} | Last Update: {} | Users: {} | Size: {}\nPermission Warnings: {}\n".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
             elif table == "file_analysis" or table == "url_analysis":
                 sys = db_info.fetchall()
                 if len(sys) > 0:

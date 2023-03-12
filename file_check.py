@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 
 def verify_file(resource) -> bool:
