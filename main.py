@@ -3,6 +3,7 @@
 import os
 import subprocess
 import sqlite3
+import tui
 from inputs import resource_request, request_check_sum, final_results
 from hash_slinging_slasher import hash_check, hash_it
 from file_check import verify_file
@@ -13,10 +14,12 @@ from db import builder, reader
 from vt import url_id
 from crxcavator import crx_report, crx_meta
 
+
 crx_ignore = ['dangerousfunctions', 'entrypoints', 'extcalls', 'manifest', 'related']
 tables = ["file_sandbox", "file_analysis", "url_analysis", "crx_report"]
 not_found = []
 found = []
+boxed = []
 
 conn = sqlite3.connect('scan_results.db')
 c = conn.cursor()
@@ -72,27 +75,64 @@ def main():
         if reader(table) == True:
             db_info = c.execute("SELECT * FROM {}".format(table))
             if table == "file_sandbox":
+                tui.to_this = "Sandbox Results"
                 box = db_info.fetchall()
                 if len(box) > 0:
                     for i in box:
-                        print("Sandbox Results\n\n{}\n{}\n{}\n".format(box[0], box[1], box[2]))
+                        boxed.append("\n{},{},{}".format(box[0], box[1], box[2]))
+                        # print("Sandbox Results\n\n{}\n{}\n{}\n".format(box[0], box[1], box[2]))
+                    tui.results = boxed
             elif table == "crx_report":
+                tui.to_this = "CRXcavator Results"
                 box = db_info.fetchall()
                 if len(box) > 0:
-                    print("CRXxavator Results:\n\n[CSP Score: {}] + [Permission Score: {}] = Total Score: {}\nName: {} | Version: {} | Last Update: {} | Users: {} | Size: {}\nPermission Warnings: {}\n".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
+                    boxed.append("\n{},{},{},{},{},{},{},{},{}".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
+                    # print("CRXxavator Results:\n\n[CSP Score: {}] + [Permission Score: {}] = Total Score: {}\nName: {} | Version: {} | Last Update: {} | Users: {} | Size: {}\nPermission Warnings: {}\n".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
+                    tui.results = boxed
             elif table == "file_analysis" or table == "url_analysis":
+                tui.to_this = "analysis"
                 sys = db_info.fetchall()
                 if len(sys) > 0:
-                    print("\nAnalysis Results\n")
+                    # print("\nAnalysis Results\n")
                     for i in sys:
-                        if i[2] == "undetected" or i[2] == "type-unsupported":
-                            not_found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
-                        else:
-                            found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
-                            """prints results to the console"""
-                    fnf_list = final_results(found, not_found) 
-                    for i in fnf_list:
-                        print(i)
+                        # if i[2] == "undetected" or i[2] == "type-unsupported":
+                        #     not_found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
+                        # else:
+                        #     found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
+                        #     """prints results to the console"""
+                        boxed.append("\n{},{},{},{}".format(i[2], i[3], i[4], i[5]))
+                    # fnf_list = final_results(found, not_found) 
+                    # for i in fnf_list:
+                        # print(i)
+                    tui.results = boxed
+            app = tui.quick_hash()
+            app.run()
+
+    # for table in tables:
+    #     if reader(table) == True:
+    #         db_info = c.execute("SELECT * FROM {}".format(table))
+    #         if table == "file_sandbox":
+    #             box = db_info.fetchall()
+    #             if len(box) > 0:
+    #                 for i in box:
+    #                     print("Sandbox Results\n\n{}\n{}\n{}\n".format(box[0], box[1], box[2]))
+    #         elif table == "crx_report":
+    #             box = db_info.fetchall()
+    #             if len(box) > 0:
+    #                 print("CRXxavator Results:\n\n[CSP Score: {}] + [Permission Score: {}] = Total Score: {}\nName: {} | Version: {} | Last Update: {} | Users: {} | Size: {}\nPermission Warnings: {}\n".format(box[0][1], box[0][2], box[0][3], box[0][5], box[0][9], box[0][4], box[0][8], box[0][7], box[0][6]))
+    #         elif table == "file_analysis" or table == "url_analysis":
+    #             sys = db_info.fetchall()
+    #             if len(sys) > 0:
+    #                 print("\nAnalysis Results\n")
+    #                 for i in sys:
+    #                     if i[2] == "undetected" or i[2] == "type-unsupported":
+    #                         not_found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
+    #                     else:
+    #                         found.append("Category: {} | Result: {} | Method: {} | Engine Name: {}".format(i[2], i[3], i[4], i[5]))
+    #                         """prints results to the console"""
+    #                 fnf_list = final_results(found, not_found) 
+    #                 for i in fnf_list:
+    #                     print(i)
     
 if __name__ == "__main__":
     main()

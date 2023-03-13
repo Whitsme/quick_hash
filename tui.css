@@ -4,12 +4,12 @@ Screen {
     layers: below middle above;
 }
 
-/* header */
-#header {
-    dock: top;
-    height: 3%;
+Header {
     background: darkgoldenrod;
-    align: center top;
+}
+
+Footer {
+    background: darkgoldenrod;
 }
 
 /* return_grid */
@@ -25,8 +25,6 @@ Screen {
 #left_pane > Static {    
     background: $boost;
     color: auto;
-    margin-bottom: 1;
-    padding: 1;
     border: whitesmoke round;
 }
 
@@ -50,10 +48,9 @@ Screen {
 
 /* return_grid -> right*/
 #top_right > Static {
-    width: auto;
+    width: 100%;
     height: 100%;
-    margin-right: 1;
-    background: $boost;
+    background: $panel;
 }
 
 /* input grid */
@@ -91,12 +88,8 @@ Screen {
     margin: 1;
     color: seagreen 80%;
     border:  seagreen round;
+
 }
 
-/* footer */
-#footer {
-    dock: bottom;
-    height: 2%;
-    background: darkgoldenrod;
-    align: center top;
-}
+
+

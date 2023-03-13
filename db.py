@@ -54,38 +54,28 @@ def writer(write_this, to_this):
 
         if len(write_this) > 8 and to_this == 'file_analysis': 
             #if existing("sha256", "file_analysis", write_this[1]) != True:
-
                 c.execute("INSERT INTO {} VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)".format(to_this), (write_this[0], write_this[1], write_this[2], write_this[3], write_this[4], write_this[5], write_this[6], write_this[7], write_this[8]))
-
                 """writes file analysis results to database"""
 
         elif len(write_this) == 8 and to_this == 'file_analysis':
             #if existing("sha256", "file_analysis", write_this[1]) != True:
-
                 c.execute("INSERT INTO {} VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)".format(to_this), (write_this[0], write_this[1], write_this[2], "none", write_this[3], write_this[4], write_this[5], write_this[6], write_this[7]))
-
                 """writes file analysis results to database"""
 
         elif to_this == 'url_analysis':
             #if existing("id", "url_analysis", write_this[1]) != True:
-
                 c.execute("INSERT INTO {} VALUES(?, ?, ?, ?, ?, ?)".format(to_this), (write_this[0], write_this[1], write_this[2], write_this[3], write_this[4], write_this[5]))
-
                 """writes url analysis results to database"""
 
         elif to_this == 'file_sandbox':
             #if existing("sha256", "file_sandbox", write_this[1]) != True:
-
                 c.execute("INSERT INTO {} VALUES(?, ?, ?, ?, ?)".format(to_this), (write_this[0], write_this[1], write_this[2], write_this[3], write_this[4][0]))
-
                 """writes file sandbox results to database"""        
 
         elif to_this == 'crx_report':
             c.execute("INSERT INTO {} VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(to_this), (write_this[0], write_this[1], write_this[2], write_this[3], write_this[4], write_this[5], write_this[6], write_this[7], write_this[8], write_this[9]))
 
-
         conn.commit()
-
         """commits changes to database"""
 
         return True
