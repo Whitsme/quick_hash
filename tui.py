@@ -1,5 +1,6 @@
 import csv
 import io
+import main
 
 from textual.app import App, ComposeResult
 from textual.binding import Binding
@@ -13,21 +14,20 @@ class quick_hash(App):
     file_sandbox = "category,sandbox_used,classification"
     analysis = "category, result, method, engine_name"
     crx_report = "permissions, total, last_update, name, permission_warnings, size, users, version"
-    to_this = ""
-    results = "\n"
+    to_this = main.view_table
+    results = main.boxed
 
     BINDINGS = [
         Binding(key="q", action="quit", description="Quit the app",),
         Binding(key="->", action="none", description="Whitsme 2023", key_display=""),
     ]
 
-
-    def what_table(self, to_this):
-        if to_this == 'analysis':
+    def what_table(self):
+        if self.to_this[0] == 'analysis':
             table_name = self.analysis
-        elif to_this == 'file_sandbox':
+        elif self.to_this[0] == 'file_sandbox':
             table_name = self.file_sandbox
-        elif to_this == 'crx_report':
+        elif self.to_this[0] == 'crx_report':
             table_name = self.crx_report
         else:
             table_name = "hello dave"
@@ -50,20 +50,14 @@ class quick_hash(App):
                 yield TextLog(wrap=True)
         
     def on_ready(self) -> None:
-        """Called  when the DOM is ready."""
         text_log = self.query_one(TextLog)
-        table_data = self.what_table(self.to_this)
+        table_data = self.what_table()
         rows = iter(csv.reader(io.StringIO(table_data)))
         table = Table(*next(rows))
         for row in rows:
             table.add_row(*row)
 
         text_log.write(table, expand=True)
-
-    def on_key(self, event: events.Key) -> None:
-        """Write Key events to log."""
-        text_log = self.query_one(TextLog)
-        text_log.write(event)
 
 if __name__ == "__main__":
     app = quick_hash()
